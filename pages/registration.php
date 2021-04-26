@@ -127,7 +127,7 @@
                     <input name="vil-city" type="text" placeholder="Village/City"/>
 
                     <label class="mt" for="username">Credentials</label>
-                    <input name="user-name" type="text" placeholder="Username"/>
+                    <input id="username" name="user-name" type="text" placeholder="Username"/>
                     <input name="password" type="password" placeholder="Password"/>
                     <input name="conf-pass" type="password" placeholder="Confirm Password"/>
 

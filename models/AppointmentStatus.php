@@ -1,68 +1,88 @@
 <?php
-    require_once("../lib/pdo.php");
-    
-    class AppointmentStatus
+require_once "../lib/pdo.php";
+
+class AppointmentStatus
+{
+    private $db;
+    public function __construct()
     {
-        private $db;
-        public function __construct()
-        {
-            $this->db = new Database();
-        }
-        
-        /**
-         * @return array
-         */
-        public function find()
-        {
-            $query = "SELECT * FROM appointment_status;";
+        $this->db = new Database();
+    }
 
-            $this->db->query($query);
+    /**
+     * @return array
+     */
+    public function find()
+    {
+        $query = "SELECT * FROM appointment_status;";
 
-            return $this->db->resultset();
-        }
+        $this->db->query($query);
 
-        /**
-         * @param id - Appointment id
-         * @return array
-         */
-        public function find_by_id ($id) {
-            $query = "SELECT * FROM appointment_status WHERE id = '$id'";
+        return $this->db->resultset();
+    }
 
-            $this->db->query($query);
+    /**
+     * @param id - Appointment id
+     * @return array
+     */
+    public function find_by_id($id)
+    {
+        $query = "SELECT * FROM appointment_status WHERE id = '$id'";
 
-            return $this->db->resultset();
-        }
+        $this->db->query($query);
 
-        public function create ($data) {
-            $query = "INSERT INTO appointment_status(id, status)
+        return $this->db->resultset();
+    }
+
+    public function create($data)
+    {
+        $query = "INSERT INTO appointment_status(id, status)
                     VALUES (:id, 'Pending')";
 
-            $this -> db -> query($query);
+        $this->db->query($query);
 
-            $this -> db -> bind('id', $data['id']);
+        $this->db->bind('id', $data['id']);
 
-            if ($this -> db -> execute()) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
         }
+    }
 
-        public function update ($data) {
-            $query = "UPDATE appointment_status
+    public function update($data)
+    {
+        $query = "UPDATE appointment_status
                      SET status= $data[status], notify_message=$data[notify_message]
                      WHERE id= $data[id])";
 
-            $this -> db -> query($query);
+        $this->db->query($query);
 
-            $this -> db -> bind(status, $data[status]);
-            // $this -> db -> bind(status, $data[status]);
+        $this->db->bind(status, $data[status]);
+        // $this -> db -> bind(status, $data[status]);
 
-            if ($this -> db -> execute()) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    /**
+     * @param integer $id - Appointment ID
+     * @return object
+     */
+    public function remove($id)
+    {
+        $query = "DELETE FROM appointment_status WHERE id= :id;";
+
+        $this->db->query($query);
+        $this->db->bind('id', $id);
+
+        $this->db->execute();
+
+        $affected_rows = $this->db->row_count();
+
+        return ($affected_rows > 0) ? true : false;
+    }
 }
-?>

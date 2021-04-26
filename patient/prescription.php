@@ -30,11 +30,10 @@
         <table>
           <thead>
             <tr>
-                <td class="center" colspan="6">Presciption Records</td>
+                <td class="center" colspan="5">Presciption Records</td>
             </tr>
 
             <tr>
-              <th>Patient Name</th>
               <th>Doctor Name</th>
               <th>Appointment ID</th>
               <th>Treatment ID</th>
@@ -45,7 +44,6 @@
           <tbody>
             <?php foreach ($prescription_record_list as $prescription_row): ?>
             <tr>
-              <td><?php echo ($prescription_row->fullname); ?></td>
               <td><?php echo ($prescription_row->dname); ?></td>
               <td><?php echo ($prescription_row->ap_id); ?></td>
               <td><?php echo ($prescription_row->tr_id); ?></td>

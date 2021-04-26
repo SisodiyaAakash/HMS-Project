@@ -1,40 +1,58 @@
 <?php
-    require_once("../lib/pdo.php");
-    
-    class MedicineMaster
+require_once "../lib/pdo.php";
+
+class MedicineMaster
+{
+    private $db;
+    public function __construct()
     {
-        private $db;
-        public function __construct()
-        {
-            $this->db = new Database();
-        }
-        
-        /**
-         * @return array
-         */
-        public function find()
-        {
-            $query = "SELECT * FROM medicine_master;";
+        $this->db = new Database();
+    }
 
-            $this->db->query($query);
+    /**
+     * @return array
+     */
+    public function find()
+    {
+        $query = "SELECT * FROM medicine_master;";
 
-            return $this->db->resultset();
-        }
+        $this->db->query($query);
 
-        public function create ($data) {
-            $query = "INSERT INTO medicine_master(medicine, used_for) 
+        return $this->db->resultset();
+    }
+
+    public function create($data)
+    {
+        $query = "INSERT INTO medicine_master(medicine, used_for)
                     VALUES (:medicine, :used_for)";
 
-            $this -> db -> query($query);
+        $this->db->query($query);
 
-            $this -> db -> bind('medicine', $data['medicine']);
-            $this -> db -> bind('used_for', $data['used_for']);
+        $this->db->bind('medicine', $data['medicine']);
+        $this->db->bind('used_for', $data['used_for']);
 
-            if ($this -> db -> execute()) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    /**
+     * @param integer $id - medicine id
+     * @return object
+     */
+    public function remove($id)
+    {
+        $query = "DELETE FROM medicine_master WHERE id= :id;";
+
+        $this->db->query($query);
+        $this->db->bind('id', $id);
+
+        $this->db->execute();
+
+        $affected_rows = $this->db->row_count();
+
+        return ($affected_rows > 0) ? true : false;
+    }
 }
-?>

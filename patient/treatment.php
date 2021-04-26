@@ -34,10 +34,9 @@
           <table>
           <thead>
             <tr>
-              <td class="center" colspan="8">Recent Treatment Records</td>
+              <td class="center" colspan="7">Recent Treatment Records</td>
             </tr>
             <tr>
-              <th>Patient Name</th>
               <th>Doctor Name</th>
               <th>Treatment Description</th>
               <th>Treatment</th>
@@ -50,7 +49,6 @@
           <tbody>
             <?php foreach ($treatment_record_list as $treatment_record_row): ?>
             <tr>
-              <td><?php echo ($treatment_record_row->fullname); ?></td>
               <td><?php echo ($treatment_record_row->dname); ?></td>
               <td><?php echo ($treatment_record_row->description); ?></td>
               <td><?php echo ($treatment_record_row->treatment); ?></td>
