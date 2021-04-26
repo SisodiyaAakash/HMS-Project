@@ -1,6 +1,9 @@
 <?php
 require_once "../lib/pdo.php";
 
+include_once("DoctorCredential.php");
+include_once("DoctorQualification.php");
+
 class DoctorMaster
 {
     private $db;
@@ -55,7 +58,7 @@ class DoctorMaster
      */
     public function find_doctor_details()
     {
-        $query = "SELECT d.dname, d.dob, dp.dept, dq.education, dq.experience
+        $query = "SELECT d.user_name, d.dname, d.dob, dp.dept, dq.education, dq.experience
                      FROM doctor_master d, department_master dp, doctor_qualification dq
                      WHERE d.user_name=dq.user_name AND dq.d_id=dp.id
                      ORDER BY d.dname";
@@ -120,5 +123,25 @@ class DoctorMaster
         $affected_rows = $this->db->row_count();
 
         return ($affected_rows > 0) ? true : false;
+    }
+
+    /**
+     * @param string $user_name - Doctor username
+     * @return object
+     */
+     
+    public function remove_trans_table($user_name)
+    {
+        $doctor_cred = new DoctorCredential();
+        $result_cred= $doctor_cred -> remove($user_name);
+        if($result_cred===FALSE){
+            return FALSE;
+        }
+        $doctor_qual = new DoctorQualification();
+        $result_qual= $doctor_qual -> remove($user_name);
+        if($result_qual===FALSE){
+            return FALSE;
+        }
+        return TRUE;
     }
 }

@@ -23,12 +23,15 @@
             echo("<script>alert('Incorrect username or password');</script>");
             return;
          }
+         else{
+            session_start();
+   
+            $_SESSION['AUTH'] = TRUE;
+            $_SESSION['AUTH_USER_TYPE'] = "admin";
+            $_SESSION['ADMIN_USERNAME'] = $data -> u_name;
 
-         session_start();
-
-         $_SESSION['AUTH'] = TRUE;
-         $_SESSION['AUTH_USER_TYPE'] = "admin";
-         $_SESSION['ADMIN_USERNAME'] = $data -> u_name;
+            header("Location: /admin/dashboard.php");
+         }
       // }
    }
 
@@ -46,12 +49,15 @@
             echo("<script>alert('Incorrect username or password');</script>");
             return;
          }
+         else{
+            session_start();
+            $_SESSION['AUTH'] = TRUE;
+            $_SESSION['AUTH_USER_TYPE'] = "doctor";
+            $_SESSION['DOCTOR_USERNAME'] = $data -> user_name;
 
-         session_start();
+            header("Location: /doctor/dashboard.php");
+         }
 
-         $_SESSION['AUTH'] = TRUE;
-         $_SESSION['AUTH_USER_TYPE'] = "doctor";
-         $_SESSION['DOCTOR_USERNAME'] = $data -> user_name;
       // }
    }
 
@@ -69,12 +75,16 @@
             echo("<script>alert('Incorrect username or password');</script>");
             return;
          }
-
-         session_start();
-
-         $_SESSION['AUTH'] = TRUE;
-         $_SESSION['AUTH_USER_TYPE'] = "patient";
-         $_SESSION['PATIENT_USERNAME'] = $data -> u_name;
+         else{
+            session_start();
+            
+            $_SESSION['AUTH'] = TRUE;
+            $_SESSION['AUTH_USER_TYPE'] = "patient";
+            $_SESSION['PATIENT_USERNAME'] = $data -> u_name;
+            
+            header("Location: /patient/dashboard.php");
+         }
       // }
+
    }
 ?>

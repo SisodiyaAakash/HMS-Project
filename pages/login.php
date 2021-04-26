@@ -12,16 +12,7 @@
         $uname = $INPUT['user-name'];
         $password = $INPUT['password'];
 
-        $cred_payload = array(
-            "u_name" => $uname,
-            "password" => $password
-        );
-
         init_patient_session($uname, $password);
-
-        header("Location: /patient/dashboard.php");
-        $patient_cred= new PatientCredential();
-        $cred_list= $patient_cred->find_by_uname_password($uname, $password);
     }
 ?>
 <!DOCTYPE html>

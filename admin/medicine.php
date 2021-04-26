@@ -5,8 +5,20 @@
     include_once '../config/db.php';
     include_once '../models/MedicineMaster.php';
 
+    $medicine_master = new MedicineMaster();
+
     // session_start();
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+
+    if (isset($_GET['remove_medicine'])) {
+      $med_id = $_GET['remove_medicine'];
+
+      $result = $medicine_master -> remove($med_id);
+
+      if ($result === TRUE) {
+        echo("<script>alert('Medicine removed');</script>");
+      }
+    }
     if (isset($INPUT['submit'])) {
 
         // Doctor Master Table (doctor_master)
@@ -18,7 +30,6 @@
             "used_for" => $used_for
         );
         
-        $medicine_master = new MedicineMaster();
         $medicine_master -> create($master_payload);
 
         echo '<script>alert("New medicine added successfully")</script>';
@@ -54,11 +65,12 @@ include_once 'comps/header.php';
         <table>
           <thead>
             <tr>
-              <td class="center" colspan="2">Medicine List</td>
+              <td class="center" colspan="3">Medicine List</td>
             </tr>
             <tr>
               <th>Medicine Name</th>
               <th>Used for</th>
+              <th class="hide"></th>
             </tr>
           </thead>
           <tbody>
@@ -66,6 +78,7 @@ include_once 'comps/header.php';
             <tr>
               <td><?php echo ($medicine_row->medicine); ?></td>
               <td><?php echo ($medicine_row->used_for); ?></td>
+              <td><a href="?remove_medicine=<?php echo ($medicine_row -> id); ?>">Delete</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>

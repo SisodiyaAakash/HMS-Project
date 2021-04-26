@@ -9,9 +9,22 @@
     include_once '../models/DoctorMaster.php';
     include_once '../models/DoctorCredential.php';
     include_once '../models/DoctorQualification.php';
+    
 
+    $doctor_master = new DoctorMaster();
     // session_start();
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+    
+    if (isset($_GET['remove_doctor'])) {
+      $d_uname = $_GET['remove_doctor'];
+
+      $result = $doctor_master -> remove_trans_table($d_uname);
+
+      if ($result === TRUE) {
+        echo("<script>alert('Doctor removed');</script>");
+      }
+    }
+
     if (isset($INPUT['submit'])) {
 
         // Doctor Master Table (doctor_master)
@@ -27,7 +40,6 @@
             "gender" => $gend,
         );
         
-        $doctor_master = new DoctorMaster();
         $doctor_master -> create($master_payload);
         
         // Doctor Credential table
@@ -140,7 +152,7 @@ include_once 'comps/header.php';
               <td><?php echo ($doctor_row->dept); ?></td>
               <td><?php echo ($doctor_row->education); ?></td>
               <td><?php echo ($doctor_row->experience);?> Years</td>
-              <td><a href="">Delete</a></td>
+              <td><a href="?remove_doctor=<?php echo($doctor_row->user_name)?>">Delete</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>

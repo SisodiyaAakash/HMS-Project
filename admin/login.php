@@ -12,16 +12,10 @@
         $uname = $INPUT['user-name'];
         $password = $INPUT['password'];
 
-        // $cred_payload = array(
-        //     "u_name" => $uname,
-        //     "password" => $password
-        // );
-
         $admin_cred= new AdminCredential();
         $cred_list= $admin_cred->find_by_uname_password($uname, $password);
 
         init_admin_session($uname, $password);
-        header("Location: /admin/dashboard.php");
     }
 ?>
 <!DOCTYPE html>

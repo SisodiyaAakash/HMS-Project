@@ -1,29 +1,33 @@
 <?php
-    $title= "States | GUNI HMS";
+    $title= "Districts | GUNI HMS";
     $page_name= "states";
     
     include_once '../config/db.php';
-    include_once '../models/StateMaster.php';
+    include_once '../models/District.php';
 
     // session_start();
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+
+    $state_id=$_GET['state_id'];
+
     if (isset($INPUT['submit'])) {
 
         // Doctor Master Table (doctor_master)
-        $state = $INPUT['state'];
+        $district = $INPUT['district'];
 
         $master_payload = array(
-            "state" => $state
+            "sid" => $state_id,
+            "district" => $district
         );
         
-        $state_master = new StateMaster();
-        $state_master -> create($master_payload);
+        $district_master = new District();
+        $district_master -> create($master_payload);
 
-        echo '<script>alert("New state added successfully")</script>';
+        echo '<script>alert("New district added successfully")</script>';
     }
-    // state Data Fetching
-    $state_master = new StateMaster();
-    $state_list = $state_master->find();
+    // district Data Fetching
+    $district_master = new District();
+    $district_list = $district_master->find_by_state($state_id);
   ?>
 <!DOCTYPE html>
 <html>
@@ -36,12 +40,12 @@
     ?>
     <div class="pagearea">
       <div class="container">
-        <h2 class="heading">State Records</h2>
+        <h2 class="heading">district Records</h2>
         <div class="form-flex">
-            <form name="state-form" method="post" class="contact" onsubmit="return validateform();">
-                <h2 class="heading">Add New State</h2>
-                <input name="state" type="text" placeholder="State Name"/>
-                <button name="submit" type="submit" id="submit" value="submit">Add state</button>
+            <form name="district-form" method="post" class="contact" onsubmit="return validateform();">
+                <h2 class="heading">Add New district</h2>
+                <input name="district" type="text" placeholder="district Name"/>
+                <button name="submit" type="submit" id="submit" value="submit">Add district</button>
             </form>
         </div>
 
@@ -52,20 +56,20 @@
         <table>
           <thead>
             <tr>
-              <td class="center" colspan="3">State List</td>
+              <td class="center" colspan="3">District List</td>
             </tr>
             <tr>
               <th>ID</th>
-              <th>State Name</th>
+              <th>District Name</th>
               <th class="hide"></th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($state_list as $state_row): ?>
+            <?php foreach ($district_list as $district_row): ?>
             <tr>
-              <td><?php echo ($state_row->id); ?></td>
-              <td><?php echo ($state_row->state_name); ?></td>
-              <td><a href="./district.php?state_id=<?php echo ($state_row->id); ?>"><?php echo ($state_row->state_name); ?>'s Districts</a></td>
+              <td><?php echo ($district_row->id); ?></td>
+              <td><?php echo ($district_row->district); ?></td>
+              <td><a href="#">Delete</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>
@@ -74,21 +78,21 @@
     </div>
   </body>
   <script>
-      // document.forms['state-form'].addEventListener('submit', validateform);
+      // document.forms['district-form'].addEventListener('submit', validateform);
       // Validation Script
       function validateform(event)
       {
-          const form = document.forms['state-form'];
+          const form = document.forms['district-form'];
 
           if (!form) {
               alert("Can't find form");
               return;
           }
 
-          // validate state name
-          const nameInput = form['state'];
+          // validate district name
+          const nameInput = form['district'];
           if (nameInput.value.length === 0) {
-              alert("Require state name");
+              alert("Require district name");
               nameInput.focus();
               return false;
           }
