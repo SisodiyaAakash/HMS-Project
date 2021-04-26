@@ -57,16 +57,9 @@
 </body>
 <script src="../files/validate.js"></script>
 <script>
-    // const regForm = document.forms['login-form'];
-
-    // if (regForm) {
-    //     regForm.addEventListener('submit', validateform);
-    // }
-
     // Validation Script
     function validateform(event)
     {
-        event.preventDefault();
         const form = document.forms['login-form'];
 
         if (!form) {
@@ -78,24 +71,29 @@
         const uNameInput = form['user-name'];
         if (uNameInput.value.length === 0) {
             alert("Require user name");
+            uNameInput.focus();
             return false;
         }
         else if (uNameInput.value.length <= 8) {
             alert("Username length must be more than 8 characters");
+            uNameInput.focus();
             return false;
         }
-        else if (usernameExp.test(vilCityInput.value) === false) {
+        else if (usernameExp.test(uNameInput.value) === false) {
             alert("Invalid user name");
+            uNameInput.focus();
             return false;
         }
 
         const passInput = form['password'];
         if (passInput.value.length === 0) {
             alert("Require password");
+            passInput.focus();
             return false;
         }
         if (passInput.value.length <= 8) {
             alert("Password length must be more than 8 character");
+            passInput.focus();
             return false;
         }
 

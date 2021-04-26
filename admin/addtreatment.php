@@ -21,7 +21,7 @@
         $treatment_instance = new TreatmentMaster();
         $treatment_instance -> create($master_payload);
 
-        echo '<script>alert("Appointment booked successfuly")</script>';
+        echo '<script>alert("Added new treatment type successfuly")</script>';
 
     }
 
@@ -44,7 +44,7 @@
     <div class="pagearea">
         <div class="container">
         <div class="treatment-form">
-            <form name="treatment-form" method="post" class="contact"">
+            <form name="treatment-form" method="post" class="contact" onsubmit="return validateform();">
                 <h2 class="heading">Add New Treatment Type</h2>
 
                 <input name="treatment-name" type="text" placeholder="Treatment Name"/>
@@ -87,9 +87,10 @@
         </div>
     </div>
 </body>
+
 <script src="../files/validate.js"></script>
 <script>
-    document.forms['treatment-form'].addEventListener('submit', validateform);
+    // document.forms['treatment-form'].addEventListener('submit', validateform);
     // Validation Script
     function validateform(event)
     {
@@ -100,7 +101,7 @@
       }
 
       // Validate treatment date
-      const treatmentInput = form['treatment-name'];
+      const treatmentNameInput = form['treatment-name'];
       if (treatmentNameInput.value == "") {
           alert("Require treatment name");
           treatmentNameInput.focus();

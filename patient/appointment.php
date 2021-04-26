@@ -214,7 +214,6 @@
     })
 </script>
 
-
 <script src="../files/validate.js"></script>
 <script>
     function getSystemDate () {

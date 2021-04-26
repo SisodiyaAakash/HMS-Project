@@ -28,7 +28,7 @@
             "duration" => $duration,
             "start_date" => $start_date,
             "start_time" => $start_time,
-            "d_uname" => $doct_uname,
+            "d_uname" => $user_name,
             "cost" => $cost
         );
   
@@ -60,7 +60,7 @@
     ?>
     <div class="pagearea">
       <div class="container">
-        <form name="treatment" method="post" action="" class="contact">
+        <form name="treatment" method="post" action="" class="contact"  onsubmit="return validateform();">
           <h2 class="heading">Add New Treatment Record</h2>
           
           <select name="patient" id="">
@@ -76,17 +76,17 @@
               <option value="<?php echo ($treatment_row->id); ?>"><?php echo ($treatment_row->treatment); ?></option>
             <?php endforeach;?>
           </select>
-          <textarea name="treatmentdesc" placeholder="Treatment Description" id="" rows="3">We have to give body massage due to back swelling</textarea>
+          <textarea name="treatmentdesc" placeholder="Treatment Description" id="" rows="3"></textarea>
           
-          <input value="3" name="duration" type="number" placeholder="Treatment Duration" />
+          <input name="duration" type="number" placeholder="Treatment Duration" />
 
           <h6 class="label">Treatment Date</h6>
-          <input value="2021-05-25" name="treatmentdate" type="date" placeholder="Date" />
+          <input name="treatmentdate" type="date" placeholder="Date" />
 
           <h6 class="label">Treatment Time</h6>
-          <input value="05:50" name="treatmenttime" type="time" placeholder="Treatment Time" />
+          <input name="treatmenttime" type="time" placeholder="Treatment Time" />
 
-          <input value="1500" name="cost" type="number" placeholder="Treatment Cost" />
+          <input name="cost" type="number" placeholder="Treatment Cost" />
 
           <button  name="submit" id="submit" value="submit" type="submit">Add Treatment Record</button>
         </form>
@@ -169,4 +169,84 @@
       </div>
     </div>
   </body>
+
+  <script src="../files/validate.js"></script>
+  <script>
+      // Validation Script
+      function validateform(event)
+      {
+        const form = document.forms['treatment'];
+        if (!form) {
+            alert("Can't find form");
+            return;
+        }
+        
+        // Validate patient selection
+        const patientInput = form['patient'];
+        if (patientInput.value == "") {
+            alert("Select patient");
+            patientInput.focus();
+            return false;
+        }
+        
+        // Validate treatment selection
+        const treatmentInput = form['treatment'];
+        if (treatmentInput.value == "") {
+            alert("Select treatment");
+            treatmentInput.focus();
+            return false;
+        }
+
+        // Validate treatment description
+        const treatmentDescInput = form['treatmentdesc'];
+        if (treatmentDescInput.value == "") {
+            alert("Require treatment description");
+            treatmentDescInput.focus();
+            return false;
+        }
+
+        // Validate treatment description
+        const durationInput = form['duration'];
+        if (durationInput.value == "") {
+            alert("Require duration");
+            durationInput.focus();
+            return false;
+        }
+        else if (durationInput.value < 1) {
+            alert("Duration can't be less than 1");
+            durationInput.focus();
+            return false;
+        }
+
+        // Validate treatment date
+        const treatmentDateInput = form['treatmentdate'];
+        if (treatmentDateInput.value == "") {
+            alert("Require treatment date");
+            treatmentDateInput.focus();
+            return false;
+        }
+
+        // Validate treatment time
+        const treatmentTimeInput = form['treatmenttime'];
+        if (treatmentTimeInput.value == "") {
+            alert("Require treatment time");
+            treatmentTimeInput.focus();
+            return false;
+        }
+
+        // Validate treatment description
+        const costInput = form['cost'];
+        if (costInput.value == "") {
+            alert("Require cost");
+            costInput.focus();
+            return false;
+        }
+        else if (costInput.value < 1) {
+            alert("Cost can't be less than 1");
+            costInput.focus();
+            return false;
+        }
+        return true;
+      }
+  </script>
 </html>

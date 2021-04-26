@@ -4,7 +4,6 @@
 
     $title = "Contact Us | GUNI HMS";
     $page_name = "Contact";
-    $is_form = true;
 
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
     if (isset($INPUT['submit'])) {
@@ -22,6 +21,8 @@
         
         $contact_us = new ContactUs();
         $contact_us -> create($contact_payload);
+        
+        echo '<script>alert("Thank you for contact with us")</script>';
     }
 ?>
 <!DOCTYPE html>
@@ -75,11 +76,10 @@ include_once '../comps/header.php';
 
 <script src="../files/validate.js"></script>
 <script>
-    document.forms['cont-form'].addEventListener('submit', validateform);
+    // document.forms['cont-form'].addEventListener('submit', validateform);
     // Validation Script
     function validateform(event)
     {
-        event.preventDefault();
         const form = document.forms['cont-form'];
 
         if (!form) {
@@ -87,27 +87,37 @@ include_once '../comps/header.php';
             return;
         }
 
-        const nameInput = form['pat-name'];
+        const nameInput = form['fname'];
         // validate Messanger name
         if (nameInput.value.length === 0) {
             alert("Require full name");
+            nameInput.focus();
             return false;
         }
         else if (alphaspaceExp.test(nameInput.value) === false) {
             alert("Invalid name");
+            nameInput.focus();
             return false;
         }
         
         const emailInput = form['email'];
         if (emailInput.value.length === 0) {
             alert("Require email");
+            emailInput.focus();
             return false;
         }
-        else if (emailExp.test(phoneInput.value) === false) {
+        else if (emailExp.test(emailInput.value) === false) {
             alert("Invalid Email");
+            emailInput.focus();
             return false;
         }
 
+        const messageInput = form['message'];
+        if (messageInput.value.length === 0) {
+            alert("Require message");
+            messageInput.focus();
+            return false;
+        }
         return true;
     }
 </script>

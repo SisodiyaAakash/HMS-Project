@@ -67,7 +67,7 @@
 
         public function update ($data) {
             $query = "UPDATE patient_master
-                        SET user_name= :user_name, fullname= :fullname, dob= :dob, gender= :gender, bg_id= :bg_id, pd= :pd, aadhar= :aadhar
+                        SET user_name= :user_name, fullname= :fullname, dob= :dob, gender= :gender, pd= :pd, aadhar= :aadhar
                         WHERE user_name= :user_name";
 
             $this -> db -> query($query);
@@ -76,8 +76,24 @@
             $this -> db -> bind('fullname', $data['fullname']);
             $this -> db -> bind('dob', $data['dob']);
             $this -> db -> bind('gender', $data['gender']);
-            $this -> db -> bind('bg_id', $data['bg_id']);
             $this -> db -> bind('pd', $data['pd']);
+            $this -> db -> bind('aadhar', $data['aadhar']);
+
+            if ($this -> db -> execute()) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
+
+        public function update_aadhar ($data) {
+            $query = "UPDATE patient_master
+                        SET user_name= :user_name, aadhar= :aadhar
+                        WHERE user_name= :user_name";
+
+            $this -> db -> query($query);
+
+            $this -> db -> bind('user_name', $data['user_name']);
             $this -> db -> bind('aadhar', $data['aadhar']);
 
             if ($this -> db -> execute()) {

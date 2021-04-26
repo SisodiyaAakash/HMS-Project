@@ -38,7 +38,8 @@
         public function find_by_uname ($patient_uname) {
             $query = "SELECT d.dname, dp.dept, am.reason, am.ap_date, am.ap_time, a_s.status 
                         FROM doctor_master d, department_master dp, appointment_master am, appointment_status a_s, doctor_qualification dq, patient_master p 
-                        WHERE am.doct_uname=d.user_name AND dq.d_id=dp.id AND d.user_name = dq.user_name AND a_s.id=am.id AND am.patient_uname=p.user_name AND p.user_name= '$patient_uname'";
+                        WHERE am.doct_uname=d.user_name AND dq.d_id=dp.id AND d.user_name = dq.user_name AND a_s.id=am.id AND am.patient_uname=p.user_name AND p.user_name= '$patient_uname'
+                        ORDER BY ap_date DESC";
             
             // $query = "SELECT d.dname, dp.dept, am.reason, am.ap_date, am.ap_time, a_s.status 
             //         FROM doctor_master d, department_master dp, appointment_master am, appointment_status a_s, doctor_qualification dq, patient_master p 

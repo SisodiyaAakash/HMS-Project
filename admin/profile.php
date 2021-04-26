@@ -9,6 +9,7 @@
     session_start();
     $uname= $_SESSION["ADMIN_USERNAME"];
     
+    $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
     if (isset($INPUT['submit'])) {
         
         // admin Master Table (admin_master)
@@ -17,22 +18,24 @@
         
         $master_payload = array(
             "fname" => $f_name,
-            "user_name" => $uname,
+            "user_name" => $uname
         );
-        $admin_master = new adminMaster();
+
+        $admin_master = new AdminMaster();
         $admin_master -> update($master_payload);
-        
+
         // admin credentials table (admin_cred)
         $password = $INPUT['password'];
         $cred_payload = array(
             "u_name" => $uname,
             "password" => $password
         );
-        $cred_instance = new adminCredential();
+        $cred_instance = new AdminCredential();
         $cred_instance -> update($cred_payload);
         
-        init_admin_session($uname, $password);
+        
         echo '<script>alert("Profile updated successfuly")</script>';
+        // init_admin_session($uname, $password);
     }
     $admin_master = new adminMaster();
     $master_list = $admin_master->find_by_uname($uname);

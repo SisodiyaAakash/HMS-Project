@@ -12,25 +12,23 @@
     session_start();
     $p_username= $_SESSION["PATIENT_USERNAME"];
     
+    $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
     if (isset($INPUT['submit'])) {
-        
         // Patient Master Table (patient_master)
         $full_name = $INPUT['pat-name'];
         $uname = $INPUT['user-name'];
         $dob = $INPUT['dob'];
         $gend = $INPUT['gender']; //This have gender id of gender_master table
-        $bg = $INPUT['bloodgrp']; //This have the bloodgroup ID data of bg_master table
         $pr_dieases = (isset($INPUT['allergy']))? $INPUT['allergy']: NULL; 
-        // $aadhar = $INPUT['aadhar']; 
+        $aadhar = $INPUT['aadhar']; 
         
         $master_payload = array(
             "fullname" => $full_name,
             "user_name" => $uname,
             "dob" => $dob,
             "gender" => $gend,
-            "bg_id" => $bg,
             "pd" => $pr_dieases,
-            "aadhar" => NULL
+            "aadhar" => $aadhar
         );
         
         $patient_master = new PatientMaster();
@@ -66,8 +64,8 @@
         $contact_instance = new PatientContactInfo();
         $contact_instance -> update($contact_payload);
         
-        init_patient_session($uname, $password);
         echo '<script>alert("Profile updated successfuly")</script>';
+        // init_patient_session($uname, $password);
     }
     // Gender Data Fetching
     $gender= new Gender();
@@ -126,10 +124,12 @@
                         <?php endforeach; ?>
                     </select>
 
+                    
                     <?php foreach($master_list as $master_row): ?>
-                    <label class="mt" for="aadhar">Verification Details</label>
-                    <input name="aadhar" readonly type="text" value="<?php echo($master_row->aadhar);?>" readonly placeholder="Aadhar number" />
+                        <label class="mt" for="aadhar">Verification Details</label>
+                        <input name="aadhar" type="text" value="<?php echo($master_row->aadhar);?>" placeholder="Aadhar number" />
                     <?php endforeach; ?>
+                            
 
                     <label class="mt" for="state">Address</label>
                     <?php foreach($contact_active_list as $contact_active_row): ?>
@@ -240,7 +240,6 @@
 
 <script src="../files/validate.js"></script>
 <script>
-    // document.forms['reg-form'].addEventListener('submit', validateform);
     // Validation Script
     function validateform(event)
     {

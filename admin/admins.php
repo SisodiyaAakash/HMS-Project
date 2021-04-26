@@ -90,8 +90,10 @@ include_once 'comps/header.php';
       </div>
     </div>
   </body>
+
+  <script src="../files/validate.js"></script>
   <script>
-      document.forms['admin-form'].addEventListener('submit', validateform);
+      // document.forms['admin-form'].addEventListener('submit', validateform);
       // Validation Script
       function validateform(event)
       {
@@ -114,31 +116,6 @@ include_once 'comps/header.php';
               nameInput.focus();
               return false;
           }
-  
-          // Validate Date of birth
-          const dobInput = form['dob'];
-          if (dobInput.value == "") {
-              alert("Require date of birth");
-              dobInput.focus();
-              return false;
-          }
-
-          // Validate Gender
-          const genderInput = form['gender'];
-          if (genderInput.value == "") {
-              alert("Select gender");
-              genderInput.focus();
-              return false;
-          }
-
-          // Validate department
-          const departmentInput = form['department'];
-          if (departmentInput.value == "") {
-              alert("Select department");
-              departmentInput.focus();
-              return false;
-          }
-          
           // Validate user name 
           const uNameInput = form['user-name'];
           if (uNameInput.value.length === 0) {
@@ -164,7 +141,7 @@ include_once 'comps/header.php';
               passInput.focus();
               return false;
           }
-          if (passInput.value.length <= 8) {
+          else if (passInput.value.length <= 8) {
               alert("Password length must be more than 8 character");
               passInput.focus();
               return false;

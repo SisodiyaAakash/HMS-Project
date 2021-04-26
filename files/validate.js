@@ -6,7 +6,6 @@
 //anchors
     // + -> one or more 
     // * -> zero or more
-console.log("Hello");
 //Validate alphabets only
 var alphaExp = /^[a-zA-Z]+$/;
 

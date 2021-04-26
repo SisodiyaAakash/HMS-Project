@@ -64,5 +64,27 @@
                 return FALSE;
             }
         }
+
+        public function update ($data) {
+            $query = "UPDATE admin_cred
+                        SET u_name= :u_name, password= :password
+                        WHERE u_name= :u_name";
+
+            $password = $data['password'];
+
+            // encrypt password
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+
+            $this -> db -> query($query);
+
+            $this -> db -> bind('u_name', $data['u_name']);
+            $this -> db -> bind('password', $hash);
+
+            if ($this -> db -> execute()) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
     }
 ?>

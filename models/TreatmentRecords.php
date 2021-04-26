@@ -32,7 +32,18 @@
 
         //     return $this->db->resultset();
         // }
-        
+
+        public function find_for_admin()
+        {
+            $query = "SELECT tr.id, d.dname, p.fullname, tr.description, t.treatment, tr.duration, tr.start_date, tr.start_time, tr.cost
+                     FROM patient_master p, treatment_master t, treatment_records tr, doctor_master d
+                     WHERE tr.p_uname=p.user_name AND tr.t_id=t.id AND tr.d_uname= d.user_name;";
+
+            $this->db->query($query);
+
+            return $this->db->resultset();
+        }
+
         /**
          * @param d_uname - Doctor Username 
          * @return array
@@ -47,7 +58,21 @@
 
             return $this->db->resultset();
         }
+        
+        /**
+         * @param uname - Patient Username 
+         * @return array
+         */
+        public function find_by_patient($uname)
+        {
+            $query = "SELECT tr.id, p.fullname, tr.description, t.treatment, tr.duration, tr.start_date, tr.start_time, tr.cost
+                     FROM patient_master p, treatment_master t, treatment_records tr, doctor_master d
+                     WHERE tr.p_uname=p.user_name AND tr.t_id=t.id AND tr.d_uname= d.user_name AND p.user_name= '$uname';";
 
+            $this->db->query($query);
+
+            return $this->db->resultset();
+        }
         public function find_by_dept($d_id)
         {
             $query = "SELECT p.fullname, t.treatment, tr.description, tr.duration, tr.start_date, tr.start_time, d.dname, dq.d_id, dm.dept, d.dname 

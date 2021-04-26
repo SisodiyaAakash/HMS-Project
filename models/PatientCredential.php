@@ -19,6 +19,16 @@
 
             return $this->db->resultset();
         }
+
+        public function find_username($uname)
+        {
+            $query = "SELECT u_name FROM patient_cred
+                        WHERE u_name='$uname';";
+
+            $this->db->query($query);
+
+            return $this->db->resultset();
+        }
         
         /**
          * @param user_name - User name

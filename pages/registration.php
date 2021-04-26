@@ -7,7 +7,7 @@
     include_once '../models/PatientCredential.php';
     include_once '../models/PatientContactInfo.php';
     include_once '../lib/utils.php';
-
+    
     $title= "Registration | GUNI HMS";
     $page_name= "Registration";
     
@@ -47,7 +47,7 @@
         
         $cred_instance = new PatientCredential();
         $cred_instance -> create($cred_payload);
-
+        
         // // Patient contact information table (pat_contact_info)
         $phone = $INPUT['pat-phone'];
         $state_name = $INPUT['state']; //This have the state id of state_master table
@@ -65,16 +65,16 @@
         
         $contact_instance = new PatientContactInfo();
         $contact_instance -> create($contact_payload);
-
+        
         init_patient_session($uname, $password);
-
+        
         header("Location: /patient/dashboard.php");
     }
-
+    
     // Gender Data Fetching
     $gender= new Gender();
     $gender_list= $gender->find();
-
+    
     // Bloodgroup Data Fetching
     $blood_group= new BloodGroup();
     $bg_list= $blood_group->find();    

@@ -39,6 +39,7 @@ include_once 'comps/header.php';
     <div class="pagearea">
       <div class="container">
         <h2 class="heading">Medicine Records</h2>
+        
         <form name="medicine-form" method="post" class="contact" onsubmit="return validateform();">
           <h2 class="heading">Add New Medicine</h2>
           <input name="medicine" type="text" placeholder="Medicine Name"/>

@@ -121,7 +121,7 @@ include_once 'comps/header.php';
         <table>
           <thead>
             <tr>
-              <td class="center" colspan="5">GUNI's Expert Doctors</td>
+              <td class="center" colspan="6">GUNI's Expert Doctors</td>
             </tr>
             <tr>
               <th>Doctor Name</th>
@@ -129,6 +129,7 @@ include_once 'comps/header.php';
               <th>Department</th>
               <th>Qualification</th>
               <th>Experience</th>
+              <th class="hide"></th>
             </tr>
           </thead>
           <tbody>
@@ -139,6 +140,7 @@ include_once 'comps/header.php';
               <td><?php echo ($doctor_row->dept); ?></td>
               <td><?php echo ($doctor_row->education); ?></td>
               <td><?php echo ($doctor_row->experience);?> Years</td>
+              <td><a href="">Delete</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>
@@ -146,6 +148,7 @@ include_once 'comps/header.php';
       </div>
     </div>
   </body>
+  <script src="../files/validate.js"></script>
   <script>
       // document.forms['doctor-form'].addEventListener('submit', validateform);
       // Validation Script
@@ -195,6 +198,22 @@ include_once 'comps/header.php';
               return false;
           }
           
+          // Validate Qualification name 
+          const educationInput = form['education'];
+          if (educationInput.value.length === 0) {
+              alert("Require qualification");
+              educationInput.focus();
+              return false;
+          }
+
+          // Validate Experience name 
+          const experienceInput = form['experience'];
+          if (experienceInput.value.length === 0) {
+              alert("Require experience");
+              experienceInput.focus();
+              return false;
+          }
+
           // Validate user name 
           const uNameInput = form['user-name'];
           if (uNameInput.value.length === 0) {
