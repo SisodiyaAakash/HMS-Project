@@ -13,7 +13,7 @@
          */
         public function find()
         {
-            $query = "SELECT * FROM day_master;";
+            $query = "SELECT * FROM day_master ORDER BY id;";
 
             $this->db->query($query);
 

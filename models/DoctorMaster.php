@@ -3,6 +3,7 @@ require_once "../lib/pdo.php";
 
 include_once("DoctorCredential.php");
 include_once("DoctorQualification.php");
+include_once("DoctorTiming.php");
 
 class DoctorMaster
 {
@@ -140,6 +141,11 @@ class DoctorMaster
         $doctor_qual = new DoctorQualification();
         $result_qual= $doctor_qual -> remove($user_name);
         if($result_qual===FALSE){
+            return FALSE;
+        }
+        $doctor_timing = new DoctorTiming();
+        $result_timing= $doctor_timing -> remove($user_name);
+        if($result_timing===FALSE){
             return FALSE;
         }
         return TRUE;

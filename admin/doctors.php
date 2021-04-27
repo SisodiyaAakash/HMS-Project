@@ -123,6 +123,7 @@ include_once 'comps/header.php';
           <input name="user-name" type="text" placeholder="Username"/>
           <input name="password" type="password" placeholder="Password"/>
           <input name="conf-pass" type="password" placeholder="Confirm Password"/>
+          
           <button name="submit" type="submit" id="submit" value="submit">Add Doctor</button>
         </form>
 

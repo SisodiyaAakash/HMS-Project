@@ -22,12 +22,15 @@ class DoctorTiming
     }
 
     /**
-     * @param user_name - User name
+     * @param u_name - User name
      * @return array
      */
-    public function find_by_uname($user_name)
+    public function find_by_uname($u_name)
     {
-        $query = "SELECT * FROM doctor_timing WHERE user_name = '$user_name'";
+        $query = "SELECT d.day_name, dt.working_day, dt.start_time, dt.end_time
+                    FROM day_master d, doctor_timing dt 
+                    WHERE d.id=dt.working_day AND dt.u_name = '$u_name'
+                    ORDER BY dt.working_day";
 
         $this->db->query($query);
 
@@ -35,16 +38,15 @@ class DoctorTiming
     }
     public function create($data)
     {
-        $query = "INSERT INTO doctor_timing(user_name, working_day, start_time, end_time, status)
-                    VALUES (:user_name, :working_day, :start_time, :end_time, :status)";
+        $query = "INSERT INTO doctor_timing(u_name, working_day, start_time, end_time)
+                    VALUES (:u_name, :working_day, :start_time, :end_time)";
 
         $this->db->query($query);
 
-        $this->db->bind('user_name', $data['user_name']);
+        $this->db->bind('u_name', $data['u_name']);
         $this->db->bind('working_day', $data['working_day']);
         $this->db->bind('start_time', $data['start_time']);
         $this->db->bind('end_time', $data['end_time']);
-        $this->db->bind('status', $data['status']);
 
         if ($this->db->execute()) {
             return true;
@@ -63,6 +65,26 @@ class DoctorTiming
 
         $this->db->query($query);
         $this->db->bind('u_name', $u_name);
+
+        $this->db->execute();
+
+        $affected_rows = $this->db->row_count();
+
+        return ($affected_rows > 0) ? true : false;
+    }
+
+    /**
+     * @param string $u_name - doctor username
+     * @param string $working_day - day
+     * @return object
+     */
+    public function remove_day($u_name,$working_day)
+    {
+        $query = "DELETE FROM doctor_timing WHERE u_name= :u_name AND working_day= :working_day;";
+
+        $this->db->query($query);
+        $this->db->bind('u_name', $u_name);
+        $this->db->bind('working_day', $working_day);
 
         $this->db->execute();
 

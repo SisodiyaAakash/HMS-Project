@@ -353,6 +353,7 @@
             confPassInput.focus();
             return false;
         }
+        return true;
     }
 </script>
 </html>
