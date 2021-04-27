@@ -5,9 +5,22 @@
     include_once '../config/db.php';
     include_once '../models/AdminMaster.php';
     include_once '../models/AdminCredential.php';
-
     // session_start();
+    
+    $admin_master = new AdminMaster();
+    $admin_cred = new AdminCredential();
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+
+    if (isset($_GET['remove_admin'])) {
+      $admin_username = $_GET['remove_admin'];
+
+      $result = $admin_master -> remove($admin_username);
+
+      if ($result === TRUE) {
+        echo("<script>alert('Admin removed');</script>");
+      }
+    }
+
     if (isset($INPUT['submit'])) {
 
         // admin Master Table (admin_master)
@@ -19,7 +32,6 @@
             "user_name" => $uname
         );
         
-        $admin_master = new AdminMaster();
         $admin_master -> create($master_payload);
         
         // admin Credential table
@@ -29,7 +41,6 @@
           "password" => $password,
         );
 
-        $admin_cred = new AdminCredential();
         $admin_cred -> create($credential_payload);
 
         echo '<script>alert("New admin added successfully")</script>';
@@ -82,7 +93,7 @@ include_once 'comps/header.php';
             <tr>
               <td><?php echo ($admin_row->fname);?></td>
               <td><?php echo ($admin_row->user_name); ?></td>
-              <td><a href="#">Delete Admin</a></td>
+              <td><a href="?remove_admin=<?php echo($admin_row->user_name)?>">Delete Admin</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>

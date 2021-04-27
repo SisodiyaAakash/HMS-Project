@@ -1,5 +1,6 @@
 <?php
 require_once "../lib/pdo.php";
+include_once "District.php";
 
 class StateMaster
 {
@@ -41,7 +42,10 @@ class StateMaster
      * @return object
      */
     public function remove($id)
-    {
+    {   
+        $district = new District();
+        $result= $district -> remove_by_state($id);
+        
         $query = "DELETE FROM state_master WHERE id= :id;";
 
         $this->db->query($query);

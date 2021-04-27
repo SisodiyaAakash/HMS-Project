@@ -4,19 +4,30 @@
     
     include_once '../config/db.php';
     include_once '../models/StateMaster.php';
-
+    
     // session_start();
-    $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
-    if (isset($INPUT['submit'])) {
+    $state_master = new StateMaster();
 
+    $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+
+    if (isset($_GET['remove_state'])) {
+      $state_id = $_GET['remove_state'];
+
+      $result = $state_master -> remove($state_id);
+
+      if ($result === TRUE) {
+        echo("<script>alert('State removed');</script>");
+      }
+    }
+
+    if (isset($INPUT['submit'])) {
         // Doctor Master Table (doctor_master)
         $state = $INPUT['state'];
 
         $master_payload = array(
-            "state" => $state
+            "state_name" => $state
         );
         
-        $state_master = new StateMaster();
         $state_master -> create($master_payload);
 
         echo '<script>alert("New state added successfully")</script>';
@@ -52,11 +63,12 @@
         <table>
           <thead>
             <tr>
-              <td class="center" colspan="3">State List</td>
+              <td class="center" colspan="4">State List</td>
             </tr>
             <tr>
               <th>ID</th>
               <th>State Name</th>
+              <th>Districts</th>
               <th class="hide"></th>
             </tr>
           </thead>
@@ -66,6 +78,7 @@
               <td><?php echo ($state_row->id); ?></td>
               <td><?php echo ($state_row->state_name); ?></td>
               <td><a href="./district.php?state_id=<?php echo ($state_row->id); ?>"><?php echo ($state_row->state_name); ?>'s Districts</a></td>
+              <td><a href="?remove_state=<?php echo($state_row->id)?>">Delete State</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>

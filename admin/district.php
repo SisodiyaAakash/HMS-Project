@@ -4,11 +4,31 @@
     
     include_once '../config/db.php';
     include_once '../models/District.php';
+    
+    session_start();
+    $state_id=NULL;
 
-    // session_start();
+    if(isset($_GET['state_id'])){
+      $state_id=$_GET['state_id'];
+      $_SESSION['state_id']=$state_id;
+    }
+    else if(isset($_SESSION['state_id'])){
+      $state_id=$_SESSION['state_id'];
+    }
+    
+    $district_master = new District();
+    
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
-
-    $state_id=$_GET['state_id'];
+    
+    if (isset($_GET['remove_district'])) {
+      $id = $_GET['remove_district'];
+      
+      $result = $district_master -> remove($id);
+      
+      if ($result === TRUE) {
+        echo("<script>alert('District removed');</script>");
+      }
+    }
 
     if (isset($INPUT['submit'])) {
 
@@ -20,7 +40,6 @@
             "district" => $district
         );
         
-        $district_master = new District();
         $district_master -> create($master_payload);
 
         echo '<script>alert("New district added successfully")</script>';
@@ -69,7 +88,7 @@
             <tr>
               <td><?php echo ($district_row->id); ?></td>
               <td><?php echo ($district_row->district); ?></td>
-              <td><a href="#">Delete</a></td>
+              <td><a href="?remove_district=<?php echo($district_row->id)?>">Delete</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>

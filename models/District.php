@@ -67,4 +67,22 @@ class District
 
         return ($affected_rows > 0) ? true : false;
     }
+
+    /**
+     * @param integer $sid - State sid
+     * @return object
+     */
+    public function remove_by_state($sid)
+    {
+        $query = "DELETE FROM dist_master WHERE sid= :sid;";
+
+        $this->db->query($query);
+        $this->db->bind('sid', $sid);
+
+        $this->db->execute();
+
+        $affected_rows = $this->db->row_count();
+
+        return ($affected_rows > 0) ? true : false;
+    }
 }
