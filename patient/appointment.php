@@ -90,8 +90,6 @@
             <h4 class="center">Please Use Wide Screen For Records</h4>
         </div>
         <!-- upcoming appointments -->
-        <?php foreach($appointment_list as $appointment_row): ?>
-          <?php if ($appointment_row->ap_date > date("Y-m-d")): ?>
           <table>
             <thead>
               <tr>
@@ -108,6 +106,7 @@
               </tr>
             </thead>
             <tbody>
+              <?php foreach($appointment_list as $appointment_row): ?>
               <tr>
                 <td><?php echo($appointment_row->dname);?></td>
                 <td><?php echo($appointment_row->dept); ?></td>
@@ -121,45 +120,9 @@
                   <a href="#">Delete Appointment</a>
                 </td>
               </tr>
+              <?php endforeach; ?>
             </tbody>
           </table>
-          <?php endif;?>
-
-          <?php if ($appointment_row->ap_date < date("Y-m-d")): ?>
-            <table>
-              <thead>
-                <tr>
-                  <td class="center" colspan="7">Appointment History</td>
-                </tr>
-                <tr>
-                  <th>Doctor</th>
-                  <th>Department</th>
-                  <th>Reason</th>
-                  <th>Appointment Date</th>
-                  <th>Appointment Time</th>
-                  <th>Status</th>
-                  <th class="hide"></th>
-                </tr>
-              </thead>
-              
-              <tbody>
-                <tr>
-                  <td><?php echo($appointment_row->dname);?></td>
-                  <td><?php echo($appointment_row->dept); ?></td>
-                  <td><?php echo($appointment_row->reason);?></td>
-                  <td><?php echo($appointment_row->ap_date);?></td>
-                  <td><?php echo($appointment_row->ap_time);?></td>
-                  <td><?php echo($appointment_row->status);?></td>
-                  <td>
-                    <a href="#">View Report</a>
-                    <hr />
-                    <a href="#">Delete Appointment</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          <?php endif;?>
-        <?php endforeach; ?>
       </div>
     </div>
   </body>

@@ -34,17 +34,17 @@
         $patient_master = new PatientMaster();
         $patient_master -> update($master_payload);
         
-        // Patient credentials table (patient_cred)
+        // // Patient credentials table (patient_cred)
         
-        $password = $INPUT['password'];
+        // $password = $INPUT['password'];
         
-        $cred_payload = array(
-            "u_name" => $uname,
-            "password" => $password
-        );
+        // $cred_payload = array(
+        //     "u_name" => $uname,
+        //     "password" => $password
+        // );
         
-        $cred_instance = new PatientCredential();
-        $cred_instance -> update($cred_payload);
+        // $cred_instance = new PatientCredential();
+        // $cred_instance -> update($cred_payload);
         
         // // Patient contact information table (pat_contact_info)
         $phone = $INPUT['pat-phone'];

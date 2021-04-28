@@ -76,13 +76,12 @@ class AdminCredential
 
         $password = $data['password'];
 
-        // encrypt password
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+        // $hash = password_hash($password, PASSWORD_DEFAULT);
 
         $this->db->query($query);
 
         $this->db->bind('u_name', $data['u_name']);
-        $this->db->bind('password', $hash);
+        $this->db->bind('password', $data['password']);
 
         if ($this->db->execute()) {
             return true;

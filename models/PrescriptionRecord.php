@@ -37,7 +37,7 @@ class PrescriptionRecords
 
     public function find_by_patient($p_uname)
     {
-        $query = "SELECT DISTINCT d.dname, pr.ap_id, pr.tr_id, m.medicine, pr.dosage
+        $query = "SELECT DISTINCT d.dname, pr.ap_id, pr.tr_id, m.medicine, pr.dosage, pr.note
                         FROM doctor_master d, prescription_record pr, medicine_master m
                         WHERE d.user_name=pr.d_uname AND m.id= pr.medicine_id";
 

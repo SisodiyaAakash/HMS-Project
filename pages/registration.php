@@ -395,6 +395,11 @@
             uNameInput.focus();
             return false;
         }
+        else if (uNameInput.value.length >= 25) {
+            alert("Username length must be less than 25 characters");
+            uNameInput.focus();
+            return false;
+        }
         else if (usernameExp.test(uNameInput.value) === false) {
             alert("Invalid user name");
             uNameInput.focus();

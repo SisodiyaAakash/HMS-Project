@@ -58,17 +58,18 @@ class DoctorCredential
     {
         $query = "UPDATE doctor_cred
                         SET user_name= :user_name, password= :password
-                        Where user_name= :user_name";
+                        WHERE user_name= :user_name";
 
+        $user_name = $data['user_name'];
         $password = $data['password'];
 
         // encrypt password
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+        // $hash = password_hash($password, PASSWORD_DEFAULT);
 
         $this->db->query($query);
 
         $this->db->bind('user_name', $data['user_name']);
-        $this->db->bind('password', $hash);
+        $this->db->bind('password', $data['password']);
 
         if ($this->db->execute()) {
             return true;

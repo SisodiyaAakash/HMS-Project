@@ -1,123 +1,123 @@
 <?php
-    include_once '../config/db.php';
-    include_once '../models/Gender.php';
-    include_once '../models/BloodGroup.php';
-    include_once '../models/StateMaster.php';
-    include_once '../models/PatientMaster.php';
-    include_once '../models/PatientCredential.php';
-    include_once '../models/PatientContactInfo.php';
-    include_once '../models/DepartmentMaster.php';
-    include_once '../models/AppointmentMaster.php';
-    include_once '../models/AppointmentStatus.php';
-    include_once '../lib/utils.php';
-    
-    $title= "Appointment Form | GUNI HMS";
-    $page_name= "appointment";
-    
-    $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
-    if (isset($INPUT['submit'])) {
-        
-        // Patient Master Table (patient_master)
-        $full_name = $INPUT['pat-name'];
-        $uname = $INPUT['user-name'];
-        $dob = $INPUT['dob'];
-        $gend = $INPUT['gender']; //This have gender id of gender_master table
-        $bg = $INPUT['bloodgrp']; //This have the bloodgroup ID data of bg_master table
-        $pr_dieases = (isset($INPUT['allergy']))? $INPUT['allergy']: NULL; 
-        $aadhar = $INPUT['aadhar']; 
-        
-        $master_payload = array(
-            "fullname" => $full_name,
-            "user_name" => $uname,
-            "dob" => $dob,
-            "gender" => $gend,
-            "bg_id" => $bg,
-            "pd" => $pr_dieases,
-            "aadhar" => $aadhar,
-        );
-        
-        $patient_master = new PatientMaster();
-        $patient_master -> create($master_payload);
-        
-        // Patient credentials table (patient_cred)
-        
-        $password = $INPUT['password'];
-        
-        $cred_payload = array(
-            "u_name" => $uname,
-            "password" => $password
-        );
-        
-        $cred_instance = new PatientCredential();
-        $cred_instance -> create($cred_payload);
+include_once '../config/db.php';
+include_once '../models/Gender.php';
+include_once '../models/BloodGroup.php';
+include_once '../models/StateMaster.php';
+include_once '../models/PatientMaster.php';
+include_once '../models/PatientCredential.php';
+include_once '../models/PatientContactInfo.php';
+include_once '../models/DepartmentMaster.php';
+include_once '../models/AppointmentMaster.php';
+include_once '../models/AppointmentStatus.php';
+include_once '../lib/utils.php';
 
-        // // Patient contact information table (pat_contact_info)
-        $phone = $INPUT['pat-phone'];
-        $state_name = $INPUT['state']; //This have the state id of state_master table
-        $district = $INPUT['dist']; //This have district id of dist_master table
-        $adr_line = $INPUT['adr-line']; 
-        $vil_city = $INPUT['vil-city'];
+$title = "Appointment Form | GUNI HMS";
+$page_name = "appointment";
 
-        $contact_payload = array(
-            "user_name"=> $uname,
-            "phone" => $phone,
-            "dist_id" => $district,
-            "address_line" => $adr_line,
-            "city_village" => $vil_city
-        );
-        
-        $contact_instance = new PatientContactInfo();
-        $contact_instance -> create($contact_payload);
+$INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+if (isset($INPUT['submit'])) {
 
-        // // Patient appointment table (appointment)
-        $ap_date = $INPUT['appointment-date'];
-        $ap_time = $INPUT['appointment-time'];
-        $doct_uname = $INPUT['doctor']; 
-        $reason = $INPUT['reason']; 
+    // Patient Master Table (patient_master)
+    $full_name = $INPUT['pat-name'];
+    $uname = $INPUT['user-name'];
+    $dob = $INPUT['dob'];
+    $gend = $INPUT['gender']; //This have gender id of gender_master table
+    $bg = $INPUT['bloodgrp']; //This have the bloodgroup ID data of bg_master table
+    $pr_dieases = (isset($INPUT['allergy'])) ? $INPUT['allergy'] : null;
+    $aadhar = $INPUT['aadhar'];
 
-        $appointment_payload = array(
-            "patient_uname"=> $uname,
-            "ap_date"=> $ap_date,
-            "ap_time"=> $ap_time,
-            "doct_uname" => $doct_uname,
-            "reason" => $reason,
-        );
-        
-        $appointment_instance = new AppointmentMaster();
-        $id=$appointment_instance->create($appointment_payload);
+    $master_payload = array(
+        "fullname" => $full_name,
+        "user_name" => $uname,
+        "dob" => $dob,
+        "gender" => $gend,
+        "bg_id" => $bg,
+        "pd" => $pr_dieases,
+        "aadhar" => $aadhar,
+    );
 
-        $appoint_status_payload = array(
-          "id" => $id
-        );
-  
-        $appoint_status_instance = new AppointmentStatus();
-        $appoint_status_instance->create($appoint_status_payload);
-        
-        init_patient_session($uname, $password);
-        header("Location: /patient/appointment.php");
-    }
+    $patient_master = new PatientMaster();
+    $patient_master->create($master_payload);
 
-    // Gender Data Fetching
-    $gender= new Gender();
-    $gender_list= $gender->find();
+    // Patient credentials table (patient_cred)
 
-    // Bloodgroup Data Fetching
-    $blood_group= new BloodGroup();
-    $bg_list= $blood_group->find();    
-    
-    // State Master Data Fetching
-    $states= new StateMaster();
-    $state_list= $states->find();  
-    
-    // Department Data Fetching
-    $department_master= new DepartmentMaster();
-    $department_list= $department_master->find();
+    $password = $INPUT['password'];
+
+    $cred_payload = array(
+        "u_name" => $uname,
+        "password" => $password,
+    );
+
+    $cred_instance = new PatientCredential();
+    $cred_instance->create($cred_payload);
+
+    // // Patient contact information table (pat_contact_info)
+    $phone = $INPUT['pat-phone'];
+    $state_name = $INPUT['state']; //This have the state id of state_master table
+    $district = $INPUT['dist']; //This have district id of dist_master table
+    $adr_line = $INPUT['adr-line'];
+    $vil_city = $INPUT['vil-city'];
+
+    $contact_payload = array(
+        "user_name" => $uname,
+        "phone" => $phone,
+        "dist_id" => $district,
+        "address_line" => $adr_line,
+        "city_village" => $vil_city,
+    );
+
+    $contact_instance = new PatientContactInfo();
+    $contact_instance->create($contact_payload);
+
+    // // Patient appointment table (appointment)
+    $ap_date = $INPUT['appointment-date'];
+    $ap_time = $INPUT['appointment-time'];
+    $doct_uname = $INPUT['doctor'];
+    $reason = $INPUT['reason'];
+
+    $appointment_payload = array(
+        "patient_uname" => $uname,
+        "ap_date" => $ap_date,
+        "ap_time" => $ap_time,
+        "doct_uname" => $doct_uname,
+        "reason" => $reason,
+    );
+
+    $appointment_instance = new AppointmentMaster();
+    $id = $appointment_instance->create($appointment_payload);
+
+    $appoint_status_payload = array(
+        "id" => $id,
+    );
+
+    $appoint_status_instance = new AppointmentStatus();
+    $appoint_status_instance->create($appoint_status_payload);
+
+    init_patient_session($uname, $password);
+    header("Location: /patient/appointment.php");
+}
+
+// Gender Data Fetching
+$gender = new Gender();
+$gender_list = $gender->find();
+
+// Bloodgroup Data Fetching
+$blood_group = new BloodGroup();
+$bg_list = $blood_group->find();
+
+// State Master Data Fetching
+$states = new StateMaster();
+$state_list = $states->find();
+
+// Department Data Fetching
+$department_master = new DepartmentMaster();
+$department_list = $department_master->find();
 ?>
 <!DOCTYPE html>
 <html>
-<?php include_once '../comps/head.php'; ?>
+<?php include_once '../comps/head.php';?>
 <body>
-    <?php include_once '../comps/header.php'; ?>
+    <?php include_once '../comps/header.php';?>
     <main>
         <div class="container">
             <div class="form-container contact-form">
@@ -132,9 +132,9 @@
 
                     <select name="gender">
                         <option selected value="">Select Gender</option>
-                        <?php foreach($gender_list as $gender_row): ?>
-                            <option value="<?php echo($gender_row->id);?>"><?php echo($gender_row->gender); ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($gender_list as $gender_row): ?>
+                            <option value="<?php echo ($gender_row->id); ?>"><?php echo ($gender_row->gender); ?></option>
+                        <?php endforeach;?>
                     </select>
 
                     <label class="mt" for="aadhar">Verification Details</label>
@@ -145,18 +145,18 @@
                     <input name="appointment-date" type="date" id="appointment-date-input" placeholder="Appointment Date"/>
                     <h6 class="label">Appointment Time</h6>
                     <input name="appointment-time" type="time" placeholder="Appointment Time"/>
-                    
+
                     <select name="department" id="department-input">
                         <option value="" selected>Select Department</option>
-                        <?php foreach($department_list as $department_row): ?>
-                            <option value="<?php echo($department_row->id);?>"><?php echo($department_row->dept); ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($department_list as $department_row): ?>
+                            <option value="<?php echo ($department_row->id); ?>"><?php echo ($department_row->dept); ?></option>
+                        <?php endforeach;?>
                     </select>
                     <select name="doctor" id="doctor_input">
                         <option value="" selected>Select Doctor</option>
-                        <?php foreach($doctor_list as $doctor_row): ?>
-                            <option value="<?php echo($doctor_row->id);?>"><?php echo($doctor_row->dept); ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($doctor_list as $doctor_row): ?>
+                            <option value="<?php echo ($doctor_row->id); ?>"><?php echo ($doctor_row->dept); ?></option>
+                        <?php endforeach;?>
                     </select>
 
                     <textarea name="reason" type="text" placeholder="Appointment Reason" rows="3"></textarea>
@@ -164,16 +164,16 @@
                     <label class="mt" for="state">Address</label>
                     <select name="state" id="state-input">
                         <option selected value="">Select State</option>
-                        <?php foreach($state_list as $state_row): ?>
-                            <option value="<?php echo($state_row->id);?>"><?php echo($state_row->state_name); ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($state_list as $state_row): ?>
+                            <option value="<?php echo ($state_row->id); ?>"><?php echo ($state_row->state_name); ?></option>
+                        <?php endforeach;?>
                     </select>
 
                     <select name="dist" id="district_input">
                         <option selected value="">Select District</option>
-                        <?php foreach($district_list as $dist_row): ?>
-                            <option value="<?php echo($dist_row->id);?>"><?php echo($dist_row->district); ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($district_list as $dist_row): ?>
+                            <option value="<?php echo ($dist_row->id); ?>"><?php echo ($dist_row->district); ?></option>
+                        <?php endforeach;?>
                     </select>
 
                     <textarea name="adr-line" type="text" placeholder="House No, Street Name" rows="2"></textarea>
@@ -188,9 +188,9 @@
                     <label class="mt" for="bloodgrp">Health Status</label>
                     <select name="bloodgrp">
                         <option value="" selected>Blood group</option>
-                        <?php foreach($bg_list as $bg_row): ?>
-                            <option value="<?php echo($bg_row->id);?>"><?php echo($bg_row->bgname); ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($bg_list as $bg_row): ?>
+                            <option value="<?php echo ($bg_row->id); ?>"><?php echo ($bg_row->bgname); ?></option>
+                        <?php endforeach;?>
                     </select>
 
                     <input name="allergy" type="text" placeholder="Past/Permenanent Disease/Allergy"/>
@@ -250,7 +250,7 @@
                 option.remove();
             }
         })
-        
+
         districtList.forEach((district, index) => {
             const option = document.createElement('option');
             option.value = district.id;
@@ -299,7 +299,7 @@
                 option.remove();
             }
         })
-    
+
         doctorList.forEach((doctor, index) => {
             const option = document.createElement('option');
             option.value = doctor.user_name;
@@ -324,11 +324,11 @@
         if (mm.length === 1) {
             mm = '0'.concat(mm);
         }
-            
+
         const dateString = [yyyy, mm, dd].join('-');
         return dateString;
     }
-    const appointmentDateInput = document.getElementById("appointment-date-input"); 
+    const appointmentDateInput = document.getElementById("appointment-date-input");
     const systemDate = getSystemDate();
     appointmentDateInput.min = systemDate;
 
@@ -355,7 +355,7 @@
             nameInput.focus();
             return false;
         }
-        
+
         // Validate patient phone number
         const phoneInput = form['pat-phone'];
         if (phoneInput.value.length === 0) {
@@ -407,7 +407,7 @@
             aadharInput.focus();
             return false;
         }
-        
+
         // Validate appointment date
         const appointmentDateInput = form['appointment-date'];
         if (appointmentDateInput.value == "") {
@@ -415,7 +415,7 @@
             appointmentDateInput.focus();
             return false;
         }
-        
+
         // Validate appointment time
         const appointmentTimeInput = form['appointment-time'];
         if (appointmentTimeInput.value == "") {
@@ -423,7 +423,7 @@
             appointmentTimeInput.focus();
             return false;
         }
-        
+
         // Validate department
         const departmentInput = form['department'];
         if (departmentInput.value == "") {
@@ -431,7 +431,7 @@
             departmentInput.focus();
             return false;
         }
-        
+
         // Validate doctor
         const doctorInput = form['doctor'];
         if (doctorInput.value == "") {
@@ -439,8 +439,8 @@
             doctorInput.focus();
             return false;
         }
-        
-        // Validate appointment reason 
+
+        // Validate appointment reason
         const reasonInput = form['reason'];
         if (reasonInput.value.length === 0) {
             alert("Require reason");
@@ -464,7 +464,7 @@
             return false;
         }
 
-        // Validate address line 
+        // Validate address line
         const adrLineInput = form['adr-line'];
         if (adrLineInput.value.length === 0) {
             alert("Require house no or street name");
@@ -494,7 +494,7 @@
             return false;
         }
 
-        // Validate user name 
+        // Validate user name
         const uNameInput = form['user-name'];
         if (uNameInput.value.length === 0) {
             alert("Require user name");
@@ -505,6 +505,11 @@
             alert("Username length must be more than 8 characters");
             uNameInput.focus();
             return false;
+        }
+        else if (uNameInput.value.length >= 25) {
+              alert("Username length must be less than 25 characters");
+              uNameInput.focus();
+              return false;
         }
         else if (usernameExp.test(uNameInput.value) === false) {
             alert("Invalid user name");

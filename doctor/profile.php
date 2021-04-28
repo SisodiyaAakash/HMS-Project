@@ -3,6 +3,7 @@
     $page_name = "doctor_profile";
 
     include_once '../config/db.php';
+    include_once '../lib/utils.php';
     include_once '../models/DoctorMaster.php';
     include_once '../models/Gender.php';
     include_once '../models/DoctorCredential.php';
@@ -12,6 +13,7 @@
     session_start();
     $user_name= $_SESSION["DOCTOR_USERNAME"];
     
+    $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
     if (isset($INPUT['submit'])) {
         
         // doctor Master Table (doctor_master)
@@ -21,7 +23,7 @@
         $gender = $INPUT['gender']; //This have gender id of gender_master table
         
         $master_payload = array(
-            "fullname" => $dname,
+            "dname" => $dname,
             "user_name" => $user_name,
             "dob" => $dob,
             "gender" => $gender
@@ -32,21 +34,21 @@
         
         // doctor credentials table (doctor_cred)
         
-        $password = $INPUT['password'];
+        // $password = $INPUT['password'];
         
-        $cred_payload = array(
-            "u_name" => $user_name,
-            "password" => $password
-        );
+        // $cred_payload = array(
+        //     "user_name" => $user_name,
+        //     "password" => $password
+        // );
         
-        $cred_instance = new DoctorCredential();
-        $cred_instance -> update($cred_payload);
+        // $cred_instance = new DoctorCredential();
+        // $cred_instance -> update($cred_payload);
         
         // Doctor Qualification Table (doctor_master)
         $user_name = $INPUT['user-name'];
         $education = $INPUT['education'];
         $experience = $INPUT['experience'];
-        $d_id = $INPUT['d_id'];
+        $d_id = $INPUT['department'];
             
         $qualification_payload = array(
             "user_name" => $user_name,
@@ -58,7 +60,7 @@
         $doctor_qualification = new DoctorQualification();
         $doctor_qualification -> update($qualification_payload);
 
-        init_doctor_session($user_name, $password);
+        // init_doctor_session($user_name, $password);
         echo '<script>alert("Profile updated successfuly")</script>';
     }
     // Gender Data Fetching

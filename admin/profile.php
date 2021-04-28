@@ -24,14 +24,14 @@
         $admin_master = new AdminMaster();
         $admin_master -> update($master_payload);
 
-        // admin credentials table (admin_cred)
-        $password = $INPUT['password'];
-        $cred_payload = array(
-            "u_name" => $uname,
-            "password" => $password
-        );
-        $cred_instance = new AdminCredential();
-        $cred_instance -> update($cred_payload);
+        // // admin credentials table (admin_cred)
+        // $password = $INPUT['password'];
+        // $cred_payload = array(
+        //     "u_name" => $uname,
+        //     "password" => $password
+        // );
+        // $cred_instance = new AdminCredential();
+        // $cred_instance -> update($cred_payload);
         
         
         echo '<script>alert("Profile updated successfuly")</script>';
