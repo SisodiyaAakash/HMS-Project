@@ -50,16 +50,17 @@ class AppointmentStatus
         }
     }
 
-    public function update($data)
+    public function status_update($ap_id, $status, $message)
     {
         $query = "UPDATE appointment_status
-                     SET status= $data[status], notify_message=$data[notify_message]
-                     WHERE id= $data[id])";
+                     SET status=:status, notify_message=:notify_message
+                     WHERE id= :id";
 
         $this->db->query($query);
 
-        $this->db->bind(status, $data[status]);
-        // $this -> db -> bind(status, $data[status]);
+        $this -> db -> bind('id', $ap_id);
+        $this -> db -> bind('status', $status);
+        $this -> db -> bind('notify_message', $message);
 
         if ($this->db->execute()) {
             return true;
@@ -72,7 +73,7 @@ class AppointmentStatus
      * @param integer $id - Appointment ID
      * @return object
      */
-    public function remove($id)
+    public function remove_byid($id)
     {
         $query = "DELETE FROM appointment_status WHERE id= :id;";
 

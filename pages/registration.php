@@ -92,7 +92,7 @@
         <div class="container">
             <div class="form-container contact-form">
                 <form name="reg-form" method="post" class="contact" onsubmit="return validateform();">
-                    <h2 class="heading">Appointment Form</h2>
+                    <h2 class="heading">Registration Form</h2>
 
                     <label class="mt" for="fname">Personal Details</label>
                     <input name="pat-name" type="text" placeholder="Full Name"/>

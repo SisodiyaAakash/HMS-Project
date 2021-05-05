@@ -6,6 +6,7 @@
     include_once '../models/PatientMaster.php';
     include_once '../models/TreatmentMaster.php';
     include_once '../models/TreatmentRecords.php';
+    include_once '../models/TreatmentNotification.php';
 
     session_start();
     $user_name= $_SESSION["DOCTOR_USERNAME"];
@@ -30,13 +31,28 @@
             "start_time" => $start_time,
             "d_uname" => $user_name,
             "cost" => $cost
-        );
+          );
   
-        $treatment_record_instance = new TreatmentRecords();
-        $treatment_record_instance->create($treatment_record_payload);
-        
-        echo '<script>alert("Added treatment record successfuly")</script>';
+          $treatment_record_instance = new TreatmentRecords();
+          $treatment_record_instance->create($treatment_record_payload);
+          
+          echo '<script>alert("Added treatment record successfuly")</script>';
     }
+    if (isset($INPUT['notify'])) {
+      $p_uname = $INPUT['patient'];
+      $notification = $INPUT['notification'];
+      
+      $notification_record_payload = array(
+        "user_name" => $p_uname,
+        "d_uname" => $user_name,
+        "notification" => $notification
+      );
+      
+      $notification_record_instance = new TreatmentNotification();
+      $notification_record_instance->create($notification_record_payload);
+      
+      echo '<script>alert("Notification message sent successfuly")</script>';
+  }
     // patient
     $patient_master = new PatientMaster();
     $patient_list = $patient_master->find();
@@ -60,6 +76,21 @@
     ?>
     <div class="pagearea">
       <div class="container">
+      <form name="treatment-notify" method="post" class="contact">
+          <h2 class="heading">Notify Patient</h2>
+          
+          <select name="patient" id="">
+            <option value="">Select Patient</option>
+            <?php foreach ($patient_list as $patient_row): ?>
+              <option value="<?php echo ($patient_row->user_name); ?>"><?php echo ($patient_row->fullname); ?></option>
+            <?php endforeach;?>
+          </select>
+
+          <textarea name="notification" placeholder="Notification" id="" rows="3"></textarea>
+
+          <button  name="notify" id="notify" value="notify" type="submit">Send Notification</button>
+        </form>
+
         <form name="treatment" method="post" action="" class="contact"  onsubmit="return validateform();">
           <h2 class="heading">Add New Treatment Record</h2>
           

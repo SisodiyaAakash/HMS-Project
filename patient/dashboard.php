@@ -8,6 +8,7 @@ include_once '../models/AppointmentMaster.php';
 include_once '../models/AppointmentStatus.php';
 include_once '../models/PatientMaster.php';
 include_once '../models/PatientMaster.php';
+include_once '../models/TreatmentNotification.php';
 
 session_start();
 $p_username = $_SESSION["PATIENT_USERNAME"];
@@ -24,8 +25,6 @@ if (isset($INPUT['submit'])) {
 
     $aadhar_instance = new PatientMaster();
     $aadhar_instance->update_aadhar($aadhar_payload);
-
-    echo '<script>alert("Aadhar added successfuly")</script>';
 }
 // Department Data Fetching
 $department_master = new DepartmentMaster();
@@ -38,6 +37,15 @@ $appointment_list = $appointment_master->find_by_uname($p_username);
 //Patient details fetching
 $patient_data = new PatientMaster();
 $patient_data_list = $patient_data->find_by_uname($p_username);
+
+//Notification Message fetching
+$message_data = new TreatmentNotification();
+if (isset($_GET['remove_notification'])) {
+    $id = $_GET['remove_notification'];
+    
+    $result = $message_data -> remove($id);
+}
+$message_data_list = $message_data->find_by_uname($p_username);
 ?>
 <!DOCTYPE html>
 <html>
@@ -109,7 +117,6 @@ include_once 'comps/head.php';
     }
     .notify-card{
         margin: 12px;
-        cursor: pointer;
         width: 30%;
         border: 1px solid #45474D;
         border-radius: 12px;
@@ -139,13 +146,20 @@ include_once 'comps/head.php';
         .notify-card:hover{
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
-        .notify-card .appointment-info{
+        .notify-card .appointment-info, .message_data-info{
             border-bottom: 1px solid #223E54;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
             padding: 0.5rem;
             color: #223E54;
             font-size: calc(15px + 0.4vw);
+        }
+        .message_data-info{
+            display: flex;
+            justify-content: space-between;
+        }
+        .message_data-info img{
+            width: 30px;
         }
         .notify-card .msg{
             font-size: calc(10px + 0.4vw);
@@ -166,16 +180,39 @@ include_once 'comps/header.php';
     <div class="pagearea">
         <div class="container">
             <div class="msg-container">
+                <?php $count=0; ?>
+                <?php foreach ($message_data_list as $message_data_row): ?>
+                <?php if ($count<5): ?>
+                    <?php $count++; ?>
+                    <div class="notify-card">
+                        <div class="message_data-info">
+                            From Dr.<?php echo ($message_data_row->dname); ?> <a href="?remove_notification=<?php echo($message_data_row->id)?>"><img src="https://img.icons8.com/ios-glyphs/30/fa314a/macos-close.png"/></a>
+                        </div>
+                        <div class="msg">
+                        <?php echo ($message_data_row->notification); ?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php endforeach;?>
+            </div>
+
+            <div class="msg-container">
+                <?php $count=0; ?>
+                <?php foreach ($appointment_list as $appointment_row): ?>
+                <?php if ($appointment_row->ap_date > date("Y-m-d") && $appointment_row->status=='Approved' && $count<5): ?>
+                    <?php $count++; ?>
                 <div class="notify-card">
                     <div class="appointment-info">
-                        From Dr.Aakash Sisodiya
+                        From Dr.<?php echo ($appointment_row->dname); ?>
                         <br />
-                        Date: 30 April 2021 at 2:30:00
+                        On <?php echo ($appointment_row->ap_date); ?> at <?php echo ($appointment_row->ap_time); ?>
                     </div>
                     <div class="msg">
-                        Sorry we unable to consult you right now due to lack of resources now. Please wait for a week if possible.
+                    <?php echo ($appointment_row->notify_message); ?>
                     </div>
                 </div>
+                <?php endif;?>
+                <?php endforeach;?>
 
                 <?php foreach ($patient_data_list as $patient_data_row): ?>
                     <?php if ($patient_data_row->aadhar == ""): ?>
@@ -200,7 +237,7 @@ include_once 'comps/header.php';
         <table>
           <thead>
             <tr>
-              <td class="center" colspan="7">Upcoming Appointments</td>
+              <td class="center" colspan="5">Upcoming Appointments</td>
             </tr>
             <tr>
               <th>Doctor</th>
@@ -208,27 +245,23 @@ include_once 'comps/header.php';
               <th>Reason</th>
               <th>Appointment Date</th>
               <th>Appointment Time</th>
-              <th>Status</th>
-              <th class="hide"></th>
             </tr>
           </thead>
           <tbody>
+            <?php $count=0; ?>
             <?php foreach ($appointment_list as $appointment_row): ?>
+            <?php if ($appointment_row->ap_date > date("Y-m-d") && $appointment_row->status=='Approved' && $count<10): ?>
+                <?php $count++; ?>
             <tr>
               <td><?php echo ($appointment_row->dname); ?></td>
               <td><?php echo ($appointment_row->dept); ?></td>
               <td><?php echo ($appointment_row->reason); ?></td>
               <td><?php echo ($appointment_row->ap_date); ?></td>
               <td><?php echo ($appointment_row->ap_time); ?></td>
-              <td><?php echo ($appointment_row->status); ?></td>
-              <td>
-                <a href="#">View Report</a>
-                <hr />
-                <a href="#">Delete Appointment</a>
-              </td>
             </tr>
-          </tbody>
+            <?php endif;?>
             <?php endforeach;?>
+          </tbody>
         </table>
         </div>
     </div>

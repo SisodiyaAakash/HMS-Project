@@ -30,6 +30,15 @@
     $department_list= $department_master->find();
 
     $treatment_master = new TreatmentMaster();
+    if (isset($_GET['remove_treatment'])) {
+      $treatment_id = $_GET['remove_treatment'];
+
+      $result = $treatment_master -> remove_byid($treatment_id);
+
+      if ($result === TRUE) {
+        echo("<script>alert('treatment removed');</script>");
+      }
+    }
     $treatment_list = $treatment_master->find_with_department();
 ?>
 <!DOCTYPE html>
@@ -66,12 +75,13 @@
           <table>
             <thead>
               <tr>
-                <td class="center" colspan="3">Treatment Types</td>
+                <td class="center" colspan="4">Treatment Types</td>
               </tr>
               <tr>
                 <th>Treatment ID</th>
                 <th>Treatment Name</th>
                 <th>Department</th>
+                <th class="hide"></th>
               </tr>
             </thead>
             <tbody>
@@ -80,6 +90,7 @@
                 <td><?php echo($treatment_row->id);?></td>
                 <td><?php echo($treatment_row->treatment);?></td>
                 <td><?php echo($treatment_row->dept);?></td>
+                <td><a href="?remove_treatment=<?php echo($treatment_row->id)?>">Delete</a></td>
               </tr>
             <?php endforeach; ?>
             </tbody>

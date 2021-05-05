@@ -93,7 +93,7 @@
           <table>
             <thead>
               <tr>
-                <td class="center" colspan="7">Upcoming Appointments</td>
+                <td class="center" colspan="6">Upcoming Appointments</td>
               </tr>
               <tr>
                 <th>Doctor</th>
@@ -102,11 +102,11 @@
                 <th>Appointment Date</th>
                 <th>Appointment Time</th>
                 <th>Status</th>
-                <th class="hide"></th>
               </tr>
             </thead>
             <tbody>
               <?php foreach($appointment_list as $appointment_row): ?>
+                <?php if ($appointment_row->ap_date > date("Y-m-d")): ?>
               <tr>
                 <td><?php echo($appointment_row->dname);?></td>
                 <td><?php echo($appointment_row->dept); ?></td>
@@ -114,12 +114,38 @@
                 <td><?php echo($appointment_row->ap_date);?></td>
                 <td><?php echo($appointment_row->ap_time);?></td>
                 <td><?php echo($appointment_row->status);?></td>
-                <td>
-                  <a href="#">View Report</a>
-                  <hr />
-                  <a href="#">Delete Appointment</a>
-                </td>
               </tr>
+              <?php endif; ?>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+              <tr>
+                <td class="center" colspan="6">Appointment History</td>
+              </tr>
+              <tr>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Reason</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach($appointment_list as $appointment_row): ?>
+                <?php if ($appointment_row->ap_date < date("Y-m-d")): ?>
+              <tr>
+                <td><?php echo($appointment_row->dname);?></td>
+                <td><?php echo($appointment_row->dept); ?></td>
+                <td><?php echo($appointment_row->reason);?></td>
+                <td><?php echo($appointment_row->ap_date);?></td>
+                <td><?php echo($appointment_row->ap_time);?></td>
+                <td><?php echo($appointment_row->status);?></td>
+              </tr>
+              <?php endif; ?>
               <?php endforeach; ?>
             </tbody>
           </table>

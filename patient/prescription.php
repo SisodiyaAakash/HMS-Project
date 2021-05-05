@@ -30,7 +30,7 @@
         <table>
           <thead>
             <tr>
-                <td class="center" colspan="6">Presciption Records</td>
+                <td class="center" colspan="7">Presciption Records</td>
             </tr>
 
             <tr>
@@ -39,6 +39,7 @@
               <th>Treatment ID</th>
               <th>Medicine</th>
               <th>Dosage</th>
+              <th>Duration</th>
               <th>Note</th>
             </tr>
           </thead>
@@ -50,6 +51,7 @@
               <td><?php echo ($prescription_row->tr_id); ?></td>
               <td><?php echo ($prescription_row->medicine); ?></td>
               <td><?php echo ($prescription_row->dosage); ?></td>
+              <td><?php echo ($prescription_row->duration); ?></td>
               <td><?php echo ($prescription_row->note); ?></td>
             </tr>
             <?php endforeach;?>

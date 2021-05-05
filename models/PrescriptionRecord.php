@@ -22,7 +22,7 @@ class PrescriptionRecords
 
     public function find_for_admin()
     {
-        $query = "SELECT DISTINCT d.dname, p.fullname, pr.ap_id, pr.tr_id, m.medicine, pr.dosage
+        $query = "SELECT DISTINCT d.dname, p.fullname, pr.ap_id, pr.tr_id, m.medicine, pr.duration, pr.dosage
                         FROM doctor_master d, patient_master p, prescription_record pr, medicine_master m, treatment_records tr, appointment_master am
                         WHERE (d.user_name=pr.d_uname AND p.user_name=tr.p_uname AND pr.tr_id=tr.id AND m.id=pr.medicine_id) OR (d.user_name=pr.d_uname AND p.user_name=am.patient_uname AND pr.ap_id=am.id AND m.id=pr.medicine_id)";
 
@@ -37,7 +37,7 @@ class PrescriptionRecords
 
     public function find_by_patient($p_uname)
     {
-        $query = "SELECT DISTINCT d.dname, pr.ap_id, pr.tr_id, m.medicine, pr.dosage, pr.note
+        $query = "SELECT DISTINCT d.dname, pr.ap_id, pr.tr_id, m.medicine, pr.dosage, pr.duration, pr.note
                         FROM doctor_master d, prescription_record pr, medicine_master m
                         WHERE d.user_name=pr.d_uname AND m.id= pr.medicine_id";
 
@@ -48,7 +48,7 @@ class PrescriptionRecords
 
     public function find_by_doctor($doct_username)
     {
-        $query = "SELECT DISTINCT pr.id, pr.ap_id, pr.tr_id, m.medicine
+        $query = "SELECT DISTINCT pr.id, pr.ap_id, pr.tr_id, m.medicine, pr.duration
                         FROM prescription_record pr, medicine_master m
                         WHERE pr.medicine_id=m.id AND d_uname= '$doct_username';";
 
@@ -85,8 +85,8 @@ class PrescriptionRecords
 
     public function create($data)
     {
-        $query = "INSERT INTO prescription_record(d_uname, ap_id, tr_id, medicine_id, dosage, note)
-                    VALUES (:d_uname, :ap_id, :tr_id, :medicine_id, :dosage, :note)";
+        $query = "INSERT INTO prescription_record(d_uname, ap_id, tr_id, medicine_id, dosage, duration, note)
+                    VALUES (:d_uname, :ap_id, :tr_id, :medicine_id, :dosage, :duration, :note)";
 
         $this->db->query($query);
 
@@ -95,6 +95,7 @@ class PrescriptionRecords
         $this->db->bind('tr_id', $data['tr_id']);
         $this->db->bind('medicine_id', $data['medicine_id']);
         $this->db->bind('dosage', $data['dosage']);
+        $this->db->bind('duration', $data['duration']);
         $this->db->bind('note', $data['note']);
 
         if ($this->db->execute()) {

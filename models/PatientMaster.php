@@ -113,6 +113,9 @@ class PatientMaster
      */
     public function remove($user_name)
     {
+        $notification = new TreatmentNotification();
+        $result= $notification -> remove_by_user($user_name);
+
         $query = "DELETE FROM patient_master WHERE user_name= :user_name;";
 
         $this->db->query($query);

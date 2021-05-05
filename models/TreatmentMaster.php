@@ -67,12 +67,30 @@ class TreatmentMaster
      * @param integer $id - Treatment id
      * @return object
      */
-    public function remove($id)
+    public function remove_byid($id)
     {
         $query = "DELETE FROM treatment_master WHERE id= :id;";
 
         $this->db->query($query);
         $this->db->bind('id', $id);
+
+        $this->db->execute();
+
+        $affected_rows = $this->db->row_count();
+
+        return ($affected_rows > 0) ? true : false;
+    }
+
+    /**
+     * @param integer $d_id - Department d_id
+     * @return object
+     */
+    public function remove_byd_id($d_id)
+    {
+        $query = "DELETE FROM treatment_master WHERE d_id= :d_id;";
+
+        $this->db->query($query);
+        $this->db->bind('d_id', $d_id);
 
         $this->db->execute();
 

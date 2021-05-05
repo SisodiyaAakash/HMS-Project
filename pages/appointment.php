@@ -141,11 +141,6 @@ $department_list = $department_master->find();
                     <input name="aadhar" type="text" placeholder="Aadhar number" />
 
                     <label class="mt" for="appointment-date">Appointment Details</label>
-                    <h6 class="label">Appointment Date</h6>
-                    <input name="appointment-date" type="date" id="appointment-date-input" placeholder="Appointment Date"/>
-                    <h6 class="label">Appointment Time</h6>
-                    <input name="appointment-time" type="time" placeholder="Appointment Time"/>
-
                     <select name="department" id="department-input">
                         <option value="" selected>Select Department</option>
                         <?php foreach ($department_list as $department_row): ?>
@@ -158,6 +153,11 @@ $department_list = $department_master->find();
                             <option value="<?php echo ($doctor_row->id); ?>"><?php echo ($doctor_row->dept); ?></option>
                         <?php endforeach;?>
                     </select>
+                    <h6 class="label">Appointment Date</h6>
+                    <input name="appointment-date" type="date" id="appointment-date-input" placeholder="Appointment Date"/>
+                    <h6 class="label">Appointment Time</h6>
+                    <input name="appointment-time" type="time" placeholder="Appointment Time"/>
+
 
                     <textarea name="reason" type="text" placeholder="Appointment Reason" rows="3"></textarea>
 
@@ -196,10 +196,6 @@ $department_list = $department_master->find();
                     <input name="allergy" type="text" placeholder="Past/Permenanent Disease/Allergy"/>
 
                     <button name="submit" type="submit" id="submit" value="submit">Register Now</button>
-
-                    <p class="redirect">
-                        Existing User! <a href="login.php">Login Now</a>
-                    </p>
                 </form>
             </div>
         </div>

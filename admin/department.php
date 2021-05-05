@@ -4,6 +4,7 @@
     
     include_once '../config/db.php';
     include_once '../models/DepartmentMaster.php';
+    include_once '../models/TreatmentMaster.php';
 
     // session_start();
     $INPUT = filter_var_array($_POST, FILTER_SANITIZE_STRING);
@@ -23,6 +24,15 @@
     }
     // department Data Fetching
     $department_master = new DepartmentMaster();
+    if (isset($_GET['remove_department'])) {
+      $department_id = $_GET['remove_department'];
+
+      $result = $department_master -> remove($department_id);
+
+      if ($result === TRUE) {
+        echo("<script>alert('Department removed');</script>");
+      }
+    }
     $department_list = $department_master->find();
   ?>
 <!DOCTYPE html>
@@ -50,11 +60,12 @@ include_once 'comps/header.php';
         <table>
           <thead>
             <tr>
-              <td class="center" colspan="2">Department List</td>
+              <td class="center" colspan="3">Department List</td>
             </tr>
             <tr>
-              <th>ID</th>
+              <th>Department ID</th>
               <th>Department Name</th>
+              <th class="hide"></th>
             </tr>
           </thead>
           <tbody>
@@ -62,6 +73,7 @@ include_once 'comps/header.php';
             <tr>
               <td><?php echo ($department_row->id); ?></td>
               <td><?php echo ($department_row->dept); ?></td>
+              <td><a href="?remove_department=<?php echo($department_row->id)?>">Delete</a></td>
             </tr>
           </tbody>
             <?php endforeach;?>

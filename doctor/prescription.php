@@ -19,6 +19,7 @@
         $tr_id = $INPUT['treatment'];
         $medicine_id = $INPUT['medicine'];
         $dosage = $INPUT['dosage'];
+        $duration = $INPUT['duration'];
         $note = $INPUT['note'];
   
         $prescription_payload = array(
@@ -27,6 +28,7 @@
             "tr_id" => $tr_id,
             "medicine_id" => $medicine_id,
             "dosage" => $dosage,
+            "duration" => $duration,
             "note" => $note
         );
   
@@ -88,6 +90,9 @@
           </select>
  
           <input name="dosage" type="text" placeholder="Dosage (Ex: 1-0-1)" />
+
+          <input name="duration" type="text" placeholder="For 3 days" />
+
           <input name="note" type="text" placeholder="Note" />
 
           <button  name="submit" id="submit" value="submit" type="submit">Prescribe Medicine</button>
@@ -100,13 +105,14 @@
         <table>
           <thead>
             <tr>
-                <td class="center" colspan="3">Presciption Records</td>
+                <td class="center" colspan="4">Presciption Records</td>
             </tr>
 
             <tr>
               <th>Appointment ID</th>
               <th>Treatment ID</th>
               <th>Medicine</th>
+              <th>Duration</th>
             </tr>
           </thead>
           <tbody>
@@ -115,6 +121,7 @@
               <td><?php echo ($prescription_row->ap_id); ?></td>
               <td><?php echo ($prescription_row->tr_id); ?></td>
               <td><?php echo ($prescription_row->medicine); ?></td>
+              <td><?php echo ($prescription_row->duration); ?></td>
             </tr>
             <?php endforeach;?>
           </tbody>

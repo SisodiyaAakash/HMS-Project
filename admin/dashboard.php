@@ -45,7 +45,7 @@
             <table>
                 <thead>
                 <tr>
-                    <td class="center" colspan="8">Upcoming Appointments</td>
+                    <td class="center" colspan="7">Upcoming Appointments</td>
                 </tr>
                 <tr>
                     <th>Patient Name</th>
@@ -55,11 +55,11 @@
                     <th>Doctor Name</th>
                     <th>Appointment Date</th>
                     <th>Appointment Time</th>
-                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($appointment_list as $appointment_row): ?>
+                <?php if ($appointment_row->ap_date > date("Y-m-d") && $appointment_row->status=='Approved' ): ?>
                 <tr>
                     <td><?php echo ($appointment_row->fullname); ?></td>
                     <td><?php echo ($appointment_row->phone); ?></td>
@@ -68,8 +68,8 @@
                     <td><?php echo ($appointment_row->dname); ?></td>
                     <td><?php echo ($appointment_row->ap_date); ?></td>
                     <td><?php echo ($appointment_row->ap_time); ?></td>
-                    <td><?php echo ($appointment_row->status); ?></td>
                 </tr>
+                <?php endif;?>
                 <?php endforeach;?>
                 </tbody>
             </table>

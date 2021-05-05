@@ -23,7 +23,7 @@ class AppointmentMaster
 
     public function find_for_admin()
     {
-        $query = "SELECT p.fullname, pc.phone, d.dname, dp.dept, am.reason, am.ap_date, am.ap_time, a_s.status
+        $query = "SELECT am.id, p.fullname, pc.phone, d.dname, dp.dept, am.reason, am.ap_date, am.ap_time, a_s.status
             FROM patient_master p, pat_contact_info pc, doctor_master d, appointment_master am, appointment_status a_s, doctor_qualification dq, department_master dp
             WHERE p.user_name = pc.user_name AND dq.d_id=dp.id AND p.user_name = am.patient_uname AND d.user_name = dq.user_name AND am.doct_uname=d.user_name AND a_s.id=am.id";
 
@@ -38,7 +38,7 @@ class AppointmentMaster
      */
     public function find_by_uname($patient_uname)
     {
-        $query = "SELECT d.dname, dp.dept, am.reason, am.ap_date, am.ap_time, a_s.status
+        $query = "SELECT d.dname, dp.dept, am.reason, am.ap_date, am.ap_time, a_s.status, a_s.notify_message
                         FROM doctor_master d, department_master dp, appointment_master am, appointment_status a_s, doctor_qualification dq, patient_master p
                         WHERE am.doct_uname=d.user_name AND dq.d_id=dp.id AND d.user_name = dq.user_name AND a_s.id=am.id AND am.patient_uname=p.user_name AND p.user_name= '$patient_uname'
                         ORDER BY ap_date DESC";
@@ -109,6 +109,27 @@ class AppointmentMaster
 
         $this->db->query($query);
         $this->db->bind('patient_uname', $patient_uname);
+
+        $this->db->execute();
+
+        $affected_rows = $this->db->row_count();
+
+        return ($affected_rows > 0) ? true : false;
+    }
+
+    /**
+     * @param integer $id - Appointment Id
+     * @return object
+     */
+    public function remove_byid($id)
+    {
+        $status = new AppointmentStatus();
+        $result= $status -> remove_byid($id);
+
+        $query = "DELETE FROM appointment_master WHERE id= :id;";
+
+        $this->db->query($query);
+        $this->db->bind('id', $id);
 
         $this->db->execute();
 
