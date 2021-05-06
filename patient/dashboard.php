@@ -199,7 +199,7 @@ include_once 'comps/header.php';
             <div class="msg-container">
                 <?php $count=0; ?>
                 <?php foreach ($appointment_list as $appointment_row): ?>
-                <?php if ($appointment_row->ap_date > date("Y-m-d") && $appointment_row->status=='Approved' && $count<5): ?>
+                <?php if ($appointment_row->ap_date > date("Y-m-d") && $appointment_row->status !== 'Pending' && $count<5): ?>
                     <?php $count++; ?>
                 <div class="notify-card">
                     <div class="appointment-info">
