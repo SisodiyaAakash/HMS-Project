@@ -71,7 +71,9 @@
           <select name="appointment" id="">
             <option selected value="NULL">Select Appointment</option>
             <?php foreach ($appointment_list as $appointment_row): ?>
-              <option value="<?php echo ($appointment_row->id); ?>"><?php echo ($appointment_row->fullname); ?>'s appointment on <?php echo ($appointment_row->ap_date); ?></option>
+              <?php if ($appointment_row->status === 'Approved'): ?>
+                <option value="<?php echo ($appointment_row->id); ?>"><?php echo ($appointment_row->fullname); ?>'s appointment on <?php echo ($appointment_row->ap_date); ?></option>
+              <?php endif;?>
             <?php endforeach;?>
           </select>
 
