@@ -20,6 +20,22 @@ class DepartmentMaster
         return $this->db->resultset();
     }
 
+public function create($data)
+    {
+        $query = "INSERT INTO department_master(dept)
+                    VALUES (:dept)";
+
+        $this->db->query($query);
+
+        $this->db->bind('dept', $data['dept']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @param integer $id - Department id
      * @return object
